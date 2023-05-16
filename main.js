@@ -1,5 +1,3 @@
-console.log("Hello World.");
-
 const FLOW_RATE = 100; // flow rate in ml / sec
 const NUM_TAPS = 4;
 const QUEUE = [400, 750, 1000, 600, 400, 1000, 1500, 300, 550, 450, 500, 600, 300, 100, 1000];
@@ -7,20 +5,24 @@ const WALK_TIME = 5.0;
 const USE_WALK_DELAY = true;
 
 function verifyQueue(queue) {
-    if (Array.isArray(queue)) {
-        for (element of queue) {
-            if (isNaN(element)) {
-                console.log("An element of the queue is not a number.");
-                return false;
+    try {
+        if (Array.isArray(queue)) {
+            for (element of queue) {
+                // we check that each element is a positive number
+                if (isNaN(element) || element <= 0) {
+                    throw new Error("An element of the queue is not a valid number.");
+                }
             }
         }
+        else {
+            throw new Error("Queue is not an array.");
+        }
+        return true;
     }
-    else {
-        console.log("Queue is not an array.");
+    catch(error) {
+        console.log("Error: " + error.message)
         return false;
     }
-    console.log("Valid queue.");
-    return true;
 }
 
 function calculateTimeSingleTap(queue) {
