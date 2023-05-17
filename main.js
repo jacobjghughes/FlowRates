@@ -1,6 +1,8 @@
 const FLOW_RATE = 100; // flow rate in ml / sec
-const TAP_SPEEDS = [FLOW_RATE, FLOW_RATE, FLOW_RATE, 2 * FLOW_RATE]; 
-const QUEUE = [400, 750, 1000, 600, 400, 1000, 1500, 300, 550, 450, 500, 600, 300, 100, 1000];
+const TAP_SPEEDS = [2*FLOW_RATE, FLOW_RATE];
+const QUEUE = [10000, 10000, 10000, 10000];
+// const TAP_SPEEDS = [FLOW_RATE, FLOW_RATE, FLOW_RATE, 2*FLOW_RATE];
+// const QUEUE = [400, 750, 1000, 600, 400, 1000, 1500, 300, 550, 450, 500, 600, 300, 100, 1000];
 const WALK_TIME = 5.0;
 const USE_WALK_DELAY = true;
 
@@ -64,9 +66,8 @@ function calculateTimeMultiTap(bottleQueue, tapSpeeds) {
         // remove the front person from the queue and add their time to the available tap
         let nextBottle = bottleQueue.shift();
         tapTimes[lowestIndex] += (nextBottle / tapSpeeds[lowestIndex]);
-        // here we add delay (if enabled) to account for the next person walking to the tap
-        // assume this delay is not applied before the first person, and we don't add delay after the last person in the queue
-        if (USE_WALK_DELAY && bottleQueue.length != 0) {
+        // here we add delay (if enabled) to the tap, to account for the person walking to the tap
+        if (USE_WALK_DELAY) {
             tapTimes[lowestIndex] += WALK_TIME;
             waitingTime += WALK_TIME;
         }
